@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id Int @id @default(autoincrement())
+
+  username String  @unique
+  password String
+  Anime    Anime[]
+
+  @@map("admins")
+}
+
+model Anime {
+  id Int @id @default(autoincrement())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title       String
+  description String
+
+  releaseDate DateTime
+
+  profile     AnimeProfile?
+  AnimePoster AnimePoster?
+  epsiodes    Episode[]
+
+  admin    Admin @relation(fields: [postedBy], references: [id])
+  postedBy Int
+
+  @@map("animes")
+}
+
+model AnimePoster {
+  id Int @id @default(autoincrement())
+
+  anime   Anime @relation(fields: [animeId], references: [id])
+  animeId Int   @unique
+
+  posterUrl String
+
+  @@map("anime_posters")
+}
+
+model AnimeProfile {
+  id Int @id @default(autoincrement())
+
+  updatedAt DateTime @updatedAt
+
+  anime   Anime @relation(fields: [animeId], references: [id])
+  animeId Int   @unique
+
+  altTitle String?
+  genres   String[]
+
+  @@map("anime_profiles")
+}
+
+model Episode {
+  id Int @id @default(autoincrement())
+
+  updatedAt DateTime @updatedAt
+
+  anime   Anime @relation(fields: [animeId], references: [id])
+  animeId Int
+
+  episodeNumber Int
+
+  download1080p String?
+  download720p  String?
+  download480p  String?
+  download360p  String?
+
+  @@map("episodes")
+}
