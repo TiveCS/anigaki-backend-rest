@@ -27,7 +27,7 @@ model Anime {
   updatedAt DateTime @updatedAt
 
   title       String
-  description String
+  description String?
 
   releaseDate DateTime
 
