@@ -41,11 +41,11 @@ export class EpisodeService {
       if (isEpisodeExists)
         throw new BadRequestException('Episode already exists');
 
-      // Check if at least have one download link of any video quality for this episode
-      const hasDownloadLink =
-        !download1080p || !download720p || !download480p || !download360p;
+      // Check if at least have one download link for this episode
+      const isNoDownloadLink: boolean =
+        !download1080p && !download720p && !download480p && !download360p;
 
-      if (hasDownloadLink) {
+      if (!isNoDownloadLink) {
         // create episode
         const episode = await this.prisma.episode.create({
           data: {
