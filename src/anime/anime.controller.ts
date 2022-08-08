@@ -11,7 +11,7 @@ import { JwtGuard } from 'src/auth/guard';
 import { AnimeService } from './anime.service';
 import { AnimeDto } from './dto';
 
-@Controller('anime')
+@Controller('animes')
 export class AnimeController {
   constructor(private readonly animeService: AnimeService) {}
 
