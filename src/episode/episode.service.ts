@@ -26,6 +26,9 @@ export class EpisodeService {
         where: {
           id: animeId,
         },
+        select: {
+          id: true,
+        },
       });
 
       if (!anime) throw new NotFoundException('Anime not found');
@@ -48,8 +51,17 @@ export class EpisodeService {
           data: {
             ...dto,
           },
+          select: {
+            id: true,
+            animeId: true,
+            episodeNumber: true,
+          },
         });
         return episode;
+      } else {
+        throw new BadRequestException(
+          'Episode must have at least one download link',
+        );
       }
     } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError) {
@@ -57,6 +69,52 @@ export class EpisodeService {
           throw new NotFoundException('Anime not found');
         }
       }
+      throw err;
+    }
+  }
+
+  async findAllEpisodes(animeId: number) {
+    const episodes = await this.prisma.episode.findMany({
+      where: {
+        animeId,
+      },
+      orderBy: {
+        episodeNumber: 'desc',
+      },
+    });
+
+    return episodes;
+  }
+
+  async editEpisode(dto: EpisodeDto) {
+    try {
+      const { animeId, episodeNumber } = dto;
+
+      const episode = await this.prisma.episode.findFirst({
+        where: {
+          animeId,
+          AND: {
+            episodeNumber,
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (!episode) throw new NotFoundException('Episode not found');
+
+      const updatedEpisode = await this.prisma.episode.update({
+        where: {
+          id: episode.id,
+        },
+        data: {
+          ...dto,
+        },
+      });
+
+      return updatedEpisode;
+    } catch (err) {
       throw err;
     }
   }
@@ -71,6 +129,10 @@ export class EpisodeService {
         AND: {
           episodeNumber,
         },
+      },
+      select: {
+        animeId: true,
+        episodeNumber: true,
       },
     });
 
