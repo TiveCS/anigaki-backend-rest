@@ -4,6 +4,8 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AdminController } from './admin/admin.controller';
 import { AdminModule } from './admin/admin.module';
+import { AnimeModule } from './anime/anime.module';
+import { EpisodeModule } from './episode/episode.module';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { AdminModule } from './admin/admin.module';
     AuthModule,
     PrismaModule,
     AdminModule,
+    AnimeModule,
+    EpisodeModule,
   ],
   controllers: [AdminController],
 })
