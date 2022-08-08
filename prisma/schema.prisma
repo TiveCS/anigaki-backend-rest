@@ -32,7 +32,7 @@ model Anime {
   releaseDate DateTime
 
   profile     AnimeProfile?
-  AnimePoster AnimePoster?
+  animePoster AnimePoster?
   epsiodes    Episode[]
 
   admin    Admin @relation(fields: [postedBy], references: [id])

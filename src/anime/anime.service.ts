@@ -42,4 +42,41 @@ export class AnimeService {
       }
     }
   }
+
+  async findManyAnime(limit: number, lastUpdate: Date) {
+    try {
+      const animes = await this.prisma.anime.findMany({
+        take: limit,
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        where: {
+          updatedAt: {
+            lte: lastUpdate,
+          },
+        },
+        select: {
+          id: true,
+          title: true,
+          epsiodes: {
+            take: 1,
+            orderBy: {
+              episodeNumber: 'desc',
+            },
+            select: {
+              episodeNumber: true,
+            },
+          },
+          animePoster: {
+            select: {
+              posterUrl: true,
+            },
+          },
+        },
+      });
+      return animes;
+    } catch (err) {
+      throw err;
+    }
+  }
 }
