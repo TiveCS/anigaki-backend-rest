@@ -7,11 +7,11 @@ import { AnimeDto, AnimePosterDto, AnimeProfileDto } from './dto';
 export class AnimeService {
   constructor(private prisma: PrismaService) {}
 
-  async postAnime(dto: AnimeDto, postedBy: number) {
+  async postAnime(animeDto: AnimeDto, postedBy: number) {
     try {
       const anime = await this.prisma.anime.create({
         data: {
-          ...dto,
+          ...animeDto,
           postedBy,
         },
       });

@@ -20,8 +20,8 @@ export class AnimeController {
 
   @UseGuards(JwtGuard)
   @Post()
-  postAnime(@Body() dto: AnimeDto, @GetUser('id') postedBy: number) {
-    return this.animeService.postAnime(dto, postedBy);
+  postAnime(@Body() animeDto: AnimeDto, @GetUser('id') postedBy: number) {
+    return this.animeService.postAnime(animeDto, postedBy);
   }
 
   @UseGuards(JwtGuard)
