@@ -50,6 +50,7 @@ export class AnimeService {
           id: animeId,
         },
         create: {
+          animeId,
           ...dto,
         },
         update: {
@@ -73,6 +74,7 @@ export class AnimeService {
           id: animeId,
         },
         create: {
+          animeId,
           ...dto,
         },
         update: {
