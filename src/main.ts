@@ -9,8 +9,14 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       transform: true,
-    }),
+    })
   );
+
+  const origin: string | RegExp = process.env.FRONTEND_URL || '*';
+  app.enableCors({
+    origin: origin,
+    credentials: true,
+  });
 
   await app.listen(5000, '0.0.0.0');
 }
