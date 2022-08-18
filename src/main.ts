@@ -1,15 +1,16 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { readFileSync } from 'fs';
 import { AppModule } from './app.module';
 
-import fs from 'fs';
-
 async function bootstrap() {
+  const httpsOptions = {
+    key: readFileSync('./secret/key.pem'),
+    cert: readFileSync('./secret/cert.pem'),
+  };
+
   const app = await NestFactory.create(AppModule, {
-    httpsOptions: {
-      key: fs.readFileSync('../secret/key.pem'),
-      cert: fs.readFileSync('../secret/cert.pem'),
-    },
+    httpsOptions,
   });
 
   app.useGlobalPipes(
